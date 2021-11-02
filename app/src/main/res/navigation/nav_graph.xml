@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/clientsFragment">
+
+    <fragment
+        android:id="@+id/clientsFragment"
+        android:name="raum.muchbeer.filecreator.ui.clients.ClientsFragment"
+        android:label="Clients"
+        tools:layout="@layout/fragments_client">
+        <action
+            android:id="@+id/action_openClient"
+            app:destination="@id/clientFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/clientsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/clientFragment"
+        android:name="raum.muchbeer.filecreator.ui.client.ClientFragment"
+        android:label="Client File"
+        tools:layout="@layout/fragment_client" >
+
+        <argument
+            android:name="client_id"
+            android:defaultValue='0'
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="raum.muchbeer.filecreator.ui.add.AddViewModelFragment"
+        android:label="Add File"
+        tools:layout="@layout/file_item">
+        <action
+            android:id="@+id/action_backToClient"
+            app:destination="@id/clientsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="raum.muchbeer.filecreator.ProfileFragment"
+        android:label="Profile" />
+
+</navigation>
