@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import dagger.hilt.android.AndroidEntryPoint
 import raum.muchbeer.filecreator.MainActivity
 import raum.muchbeer.filecreator.R
 import raum.muchbeer.filecreator.data.Client
 import raum.muchbeer.filecreator.databinding.FragmentAddBinding
 
-
+@AndroidEntryPoint
 class AddViewModelFragment : Fragment() {
 
     private lateinit var binding : FragmentAddBinding
@@ -44,7 +45,7 @@ class AddViewModelFragment : Fragment() {
                     )
                 )
 
-              //  requireActivity().hideKeyboard()
+                (requireActivity() as MainActivity).hideKeyboard()
                 val navController = Navigation.findNavController(view)
                 navController.navigate(AddViewModelFragmentDirections.actionBackToClient())
             }

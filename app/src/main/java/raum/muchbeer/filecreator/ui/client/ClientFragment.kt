@@ -11,13 +11,18 @@ import android.text.format.DateFormat
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
@@ -37,7 +42,6 @@ class ClientFragment : Fragment() {
     private val TAG = ClientFragment::class.simpleName
     private lateinit var inputPFD: ParcelFileDescriptor
 
-
     private lateinit var binding : FragmentClientBinding
     private val clientViewModel : ClienVM by viewModels()
     private var adapter = ClientAdapter {  file ->
@@ -52,6 +56,12 @@ class ClientFragment : Fragment() {
 
         binding = FragmentClientBinding.inflate(inflater, container, false)
 
+        // This callback will only be called when MyFragment is at least Started.
+         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            // Handle the back button event
+        }
+
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -166,7 +176,7 @@ class ClientFragment : Fragment() {
         val uri : Uri? = try {
             FileProvider.getUriForFile(
                 requireContext(),
-                "raum.muchbeer.filecreator",
+                "raum.muchbeer.filecreator.fileprovider",
                 file
             )
         } catch (e : IllegalArgumentException) {
@@ -185,7 +195,11 @@ class ClientFragment : Fragment() {
         }
     }
 
-    companion object {
-        const val PICTURE_REQUEST = 6
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    {
+        // handle the up button here
+        return NavigationUI.onNavDestinationSelected(item!!,
+            requireView().findNavController())
+                || super.onOptionsItemSelected(item)
     }
 }

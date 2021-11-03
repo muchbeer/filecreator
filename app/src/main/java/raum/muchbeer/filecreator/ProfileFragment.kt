@@ -19,7 +19,8 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,7 +48,7 @@ class ProfileFragment : Fragment() {
                     apply()
                 }
 
-              //  requireActivity().hideKeyboard()
+                (requireActivity() as MainActivity).hideKeyboard()
                 Snackbar
                     .make(
                         view,

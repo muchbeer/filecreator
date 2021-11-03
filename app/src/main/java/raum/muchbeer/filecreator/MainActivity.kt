@@ -1,13 +1,13 @@
 package raum.muchbeer.filecreator
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.*
 import dagger.hilt.android.AndroidEntryPoint
 import raum.muchbeer.filecreator.databinding.ActivityMainBinding
 
@@ -17,24 +17,40 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration : AppBarConfiguration
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Get AppBarConfiguration
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.clientsFragment,
+                R.id.addFragment,
+                R.id.profileFragment
+            )
+        )
 
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navView.setupWithNavController(navController)
+        setSupportActionBar(binding.toolbar)
+      //  setupActionBarWithNavController(navController, appBarConfiguration)
+
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+        binding.bottomNavView.setupWithNavController(navController)
+
     }
 
     override fun onNavigateUp() : Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    fun hideKeyboard() {
+        val view: View = binding.root
+        val imm: InputMethodManager =
+            this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
